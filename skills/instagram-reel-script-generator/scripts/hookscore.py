@@ -33,6 +33,9 @@ Usage
   python3 hookscore.py --hook "I lost $18,000 on one missing contract."
   pbpaste | python3 hookscore.py -
   python3 hookscore.py hooks.txt --json
+
+Exit code: 0 if the best hook scores 70+, 1 otherwise (a verdict, not a crash).
+English only: words are matched with an ASCII pattern, so Tamil/Hindi hooks score low.
 """
 
 import argparse

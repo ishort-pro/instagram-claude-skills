@@ -63,6 +63,11 @@ account from the file (needs 5+ reels per account, which a profile export has).
   saved reports: gives `stats.medianViews` and the best/worst reels.
 - `get_reel_details` for a single reel URL the user pastes.
 Save the JSON and feed it to `outliers.py` alongside any CSV exports.
+**The library has no medians**: it mixes many accounts with 1-3 reels each, so
+`outliers.py` prints "NO BASELINE". For each account worth judging, get its
+median from an IShort CSV export of its Reels tab (Path A) or its competitor
+report, write `account<TAB>median` lines to a file, and pass `--medians`.
+Reels with 0 views are failed lookups; the tool skips and counts them.
 
 **C. Nothing connected.** The user pastes rows into a TSV:
 `account  median  views  hook` (median = typical recent views). Never scrape
@@ -83,6 +88,14 @@ Instagram yourself, never log in as the user, never ask for a password.
    each, and only claim what the numbers show. Twelve reels shows nothing;
    forty across six accounts shows something.
 3. Name what is **unclassified**: a formula you don't have yet hides there.
+
+## When the data is too thin
+
+If no multiple can be computed or fewer than ~20 reels have one, say "no
+outliers can be named yet" and fill TOP PATTERNS with "none", then list the
+exact data step that unlocks it (which accounts to export). Raw-view ranking
+can suggest what to look at, never what worked. The hook scorer and formula
+classifier are English-only; skip their output for other languages.
 
 ## Output
 

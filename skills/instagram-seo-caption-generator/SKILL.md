@@ -44,8 +44,12 @@ In order of preference:
    transcription (10 free): see `../../CONNECT-ISHORT.md`. Never invent what a
    video says.
 
-Save the script to a file. Strip nothing; the tool ignores timecodes, beat
-labels and IShort's JSON metadata line.
+Save the script to a file. The tool ignores timecodes, beat labels and
+IShort's JSON metadata line. **Do fix obvious mis-transcriptions first**
+(speech-to-text writes "clod" for Claude, "backslash analyze" for /analyze):
+correct them in the file so they don't become keywords. Change nothing else.
+`list_my_scripts` truncates transcripts to ~800 characters; use
+`search_my_scripts` with a phrase from the reel to get the full text.
 
 ## Step 2. Pick the keywords (from the script, then validated)
 
@@ -59,8 +63,8 @@ whether the whole phrase recurs, and whether it is said in the hook (first
   `story arc` becomes `story arc for reels`. It must describe the WHOLE video.
 - **Secondary keywords (2-3):** variants and sub-topics the video covers
   (`posting schedule for beginners`, `content creation`).
-- **Validate before committing.** Search the phrase in Instagram Search and in
-  Google. Keep it if real posts and pages rank for it; drop it if nothing does
+- **Validate before committing.** Search the phrase in Google (and ask the
+  user to type it into Instagram Search; never log in to Instagram yourself). Keep it if real posts and pages rank for it; drop it if nothing does
   (nobody searches it) or if only giant brands do (you won't rank). If the user
   has a keyword tool or GSC, use it. Say which way you validated.
 - **Story/vlog scripts with no searchable topic** (the tool returns names and
@@ -99,7 +103,9 @@ carry the same words.
 
 ## Step 4. Score it and fix it
 
-Run the lint with the chosen keywords. Fix in the order it prints, re-run, and
+Run the lint with the chosen keywords. `seo_caption.py` is the gate;
+`caption_lint.py` is an optional second look at the feed window, and its
+warnings are advice. Fix in the order it prints, re-run, and
 only show the user a caption at **80+ with no FAIL** (or explain the one FAIL
 you cannot fix, e.g. the video is already posted and never says the keyword).
 Then run `instagram-humanizer` on the caption (or its two scripts) so it does

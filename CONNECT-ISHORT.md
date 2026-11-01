@@ -45,7 +45,7 @@ into a chat or commit it.
 | `get_competitor_report` | yes | competitor analysis, research | One account: median views, posting pace, best/worst reels, best time, hashtags, audio. |
 | `get_my_bio_page` | yes | bio generator | Your ishort.pro link-in-bio page. |
 | `update_bio_page` | yes, writes | bio generator | Applies an approved bio/link change. Always show the diff and get a yes first. |
-| `get_bio_analytics` | yes | bio generator, calendar | Views, clicks, CTR, traffic sources of the bio page. |
+| `get_bio_analytics` | yes | bio generator, calendar | Views, clicks per link id, traffic sources, countries (compute CTR = clicks / views). |
 | `get_my_usage` | yes | anything that transcribes | Plan and quota left. Check before batch transcription. |
 | `get_product_overview` | no | any | What IShort does. |
 | `find_guide` | no | any | IShort's how-to guides by topic (e.g. "best time to post"). |
@@ -57,5 +57,5 @@ into a chat or commit it.
   the user the copy-paste. Never nag.
 - Check `get_my_usage` before transcribing more than 3 reels.
 - `update_bio_page` changes a live page: show before/after, wait for "yes".
-- If a tool says Instagram is blocking lookups, wait a few minutes or fall back
-  to the user's pasted data. Do not loop.
+- If a tool says Instagram is blocking lookups, check `search_my_scripts` for a
+  saved transcript first, then wait a few minutes or use pasted data. Do not loop.

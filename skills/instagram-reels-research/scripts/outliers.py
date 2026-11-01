@@ -155,7 +155,7 @@ def read_json(d):
     if isinstance(d, dict) and "rows" in d:                       # list/search_my_scripts
         for x in d["rows"]:
             rows.append(norm_row(x.get("account"), x.get("views"), x.get("transcript", ""),
-                                 x.get("caption", ""), x.get("reelUrl", ""),
+                                 x.get("caption", ""), x.get("reelUrl", ""), x.get("median"),
                                  extra={"likes": x.get("likes"), "comments": x.get("comments"),
                                         "engagement": x.get("engagementRate"), "duration": x.get("duration")}))
     elif isinstance(d, dict) and ("insights" in d or "stats" in d):  # get_competitor_report
@@ -208,14 +208,26 @@ def tier(m):
     return "BREAKOUT" if m >= 5 else "OUTLIER" if m >= 3 else "above par" if m >= 1.5 else "normal"
 
 
-def analyse(rows, formulas, forced_median=None):
+def load_medians(path):
+    """account<TAB>median (or account,median) per line -> {account: median}."""
+    out = {}
+    for line in open(path, encoding="utf-8"):
+        parts = re.split(r"[\t,]", line.strip())
+        if len(parts) >= 2 and num(parts[1]):
+            out[parts[0].lstrip("@").lower()] = num(parts[1])
+    return out
+
+
+def analyse(rows, formulas, forced_median=None, medians=None):
     by_acct = {}
     for r in rows:
         if r["views"] > 0:
             by_acct.setdefault(r["account"], []).append(r["views"])
     for r in rows:
         own = by_acct.get(r["account"], [])
-        if forced_median:
+        if medians and r["account"].lower() in medians:
+            base, src = medians[r["account"].lower()], "--medians file"
+        elif forced_median:
             base, src = forced_median, "given"
         elif r.get("median"):
             base, src = r["median"], "report/column"
@@ -224,7 +236,8 @@ def analyse(rows, formulas, forced_median=None):
         elif r.get("followers"):
             base, src = r["followers"], "followers (weak baseline)"
         else:
-            base, src = None, "unknown - need 5+ reels per account or --median"
+            base, src = None, ("unknown - need 5+ reels of this account in the input, a 'median' field, "
+                               "or --medians file (account<TAB>median)")
         r["baseline"], r["baseline_source"] = base, src
         r["multiple"] = round(r["views"] / base, 2) if base else None
         r["tier"] = tier(r["multiple"])
@@ -240,6 +253,7 @@ def analyse(rows, formulas, forced_median=None):
         if (r["multiple"] or 0) >= 3:
             counts[r["formula"]] = counts.get(r["formula"], 0) + 1
     return {"n": len(ranked), "accounts": len(by_acct), "reels": ranked,
+            "no_baseline": sum(1 for r in ranked if r["multiple"] is None),
             "outliers": sum(1 for r in ranked if (r["multiple"] or 0) >= 3),
             "breakouts": sum(1 for r in ranked if (r["multiple"] or 0) >= 5),
             "formulas_in_outliers": sorted(counts.items(), key=lambda kv: -kv[1]),
@@ -247,7 +261,11 @@ def analyse(rows, formulas, forced_median=None):
 
 
 def render(a, top, out=sys.stdout):
-    head = f"OUTLIER REELS  ·  {a['n']} reels  ·  {a['accounts']} account(s)  ·  {a['outliers']} at 3x+, {a['breakouts']} at 5x+"
+    if a["no_baseline"] == a["n"]:
+        counts = "NO BASELINE for any reel: multiples unknown, so outliers cannot be named"
+    else:
+        counts = f"{a['outliers']} at 3x+, {a['breakouts']} at 5x+" + (f", {a['no_baseline']} without a baseline" if a["no_baseline"] else "")
+    head = f"OUTLIER REELS  ·  {a['n']} reels  ·  {a['accounts']} account(s)  ·  {counts}"
     print("\n" + head, file=out)
     print("=" * max(len(head), 78), file=out)
     for r in a["reels"][:top]:
@@ -265,7 +283,13 @@ def render(a, top, out=sys.stdout):
         print(f"  {a['no_transcript']} outlier(s) have no transcript, so the hook above is the CAPTION, not what was said.\n"
               "  Transcribe them (IShort MCP: transcribe_reel) before you copy anything.", file=out)
     srcs = sorted({r["baseline_source"] for r in a["reels"]})
-    print("  baseline: " + "; ".join(srcs), file=out)
+    if srcs:
+        print("  baseline: " + "; ".join(srcs), file=out)
+    if a["no_baseline"]:
+        print("  FIX: a saved-scripts library mixes many accounts with 1-3 reels each. Get each account's median\n"
+              "  from an IShort CSV export of its Reels tab or get_competitor_report, then pass --medians medians.tsv.", file=out)
+    if a.get("dropped_zero"):
+        print(f"  {a['dropped_zero']} reel(s) had 0 views (usually a failed lookup, not a real zero) and were skipped.", file=out)
     print("", file=out)
 
 
@@ -284,7 +308,8 @@ def to_markdown(a, top):
 def main():
     ap = argparse.ArgumentParser(description="Rank Instagram Reels by outlier multiple (views / account median).")
     ap.add_argument("inputs", nargs="+", help="IShort CSV export, IShort MCP JSON, TSV, or - for stdin")
-    ap.add_argument("--median", type=float, help="force one baseline (account median views)")
+    ap.add_argument("--median", type=float, help="one baseline for ALL rows (only for a single-account input)")
+    ap.add_argument("--medians", help="file of account<TAB>median lines, one per account")
     ap.add_argument("--min", type=float, default=0, help="only show reels at or above this multiple")
     ap.add_argument("--top", type=int, default=25)
     ap.add_argument("--hooks", help="path to hooks.json")
@@ -295,10 +320,12 @@ def main():
     rows = []
     for p in args.inputs:
         rows += read_any(p)
+    zero = sum(1 for r in rows if not r["views"])
     rows = dedupe([r for r in rows if r["views"]])
     if not rows:
         sys.exit("no usable rows: need at least a views column (IShort export, MCP JSON or TSV)")
-    a = analyse(rows, load_formulas(args.hooks), args.median)
+    a = analyse(rows, load_formulas(args.hooks), args.median, load_medians(args.medians) if args.medians else None)
+    a["dropped_zero"] = zero
     if args.min:
         a["reels"] = [r for r in a["reels"] if (r["multiple"] or 0) >= args.min]
     if args.json:

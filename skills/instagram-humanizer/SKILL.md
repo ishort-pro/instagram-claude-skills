@@ -15,7 +15,7 @@ description: >-
 Two tools, both run locally. Use them; do not eyeball it.
 
 ```bash
-python3 scripts/humanize.py draft.txt --report     # clean it, show every change
+python3 scripts/humanize.py draft.txt --report -o clean.txt   # clean it (writes -o, else stdout)
 python3 scripts/detect.py draft.txt                # score it, five checks
 python3 scripts/detect.py before.txt after.txt     # prove the delta
 ```
@@ -45,7 +45,10 @@ sentence the same length. Rewrite these yourself, then re-run.
 
 BURSTINESS (sentence-length variety), SPECIFICITY (numbers, names, concrete
 nouns per 100 words), SLOP DENSITY, FINGERPRINT (dashes, invisible chars,
-curly quotes), VOICE (contractions, pronouns, structural tells). Pass = 70+.
+curly quotes), VOICE (contractions, pronouns, structural tells). PASS = overall
+70+ AND every check 55+. For short texts (under ~200 characters: bios, hooks,
+one-line comments) the panel is noisy: score all variants together in one
+file, or use only the FINGERPRINT and SLOP checks as the gate.
 The weakest check is the one to fix first; usually SPECIFICITY, and the fix is
 a real number or name from the user, never an invented one.
 
@@ -55,6 +58,12 @@ Local heuristics modelled on the signals public detectors use. Not GPTZero,
 Originality or Turnitin, no API calls, no promise of "undetectable". It makes
 text read like a person wrote it, which is the actual goal on Instagram:
 captions get read, and scripts get said out loud.
+
+## When the tools disagree
+
+Readability and SEO beat the panel. If raising BURSTINESS makes `beats.py`
+flag long beats, or a rewrite drops the keyword, keep the script timing and
+the keyword and accept a REVIEW on the panel; say so in one line.
 
 ## Order of operations in this pack
 

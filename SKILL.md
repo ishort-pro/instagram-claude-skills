@@ -36,6 +36,13 @@ humanize -> plan**.
 - **No fabrication.** Missing numbers become `{{your number}}` with a flag.
 - **Voice.** `~/.instagram-claude-skills/brand-voice.md` (template in
   `templates/brand-voice.md`). Swipe file and post log live in the same folder.
+  If it is missing, say so once, write in a neutral voice that mirrors the
+  source, and offer to create it. Don't block on it.
+- **Whose content is it?** An IShort script library holds reels the user
+  transcribed, mostly OTHER creators'. Before writing "your" caption or script
+  from a saved reel, check the account against the user's own handle
+  (`get_my_bio_page` lists their socials). If it isn't theirs, rewrite claims
+  in the user's terms and flag anything only the original creator can say.
 - **Humanize before showing** any caption, script, comment or DM.
 - **IShort MCP, when connected** (tools like `transcribe_reel`,
   `list_my_scripts`, `get_my_bio_page`): use real data instead of asking the

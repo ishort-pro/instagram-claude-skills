@@ -20,7 +20,7 @@ the script. Get what was actually said, then take it apart.
 
 | Have | Do |
 | --- | --- |
-| IShort MCP connected | `transcribe_reel(url)` for the transcript (cached = free; new = 1 quota). `get_reel_details(url)` for views, likes, comments, duration. If the account has a report, `get_competitor_report(handle)` gives `stats.medianViews` for the multiple. |
+| IShort MCP connected | First `search_my_scripts` with the shortcode or a phrase: if it's already in the library you get the full transcript free, even when Instagram blocks lookups. Otherwise `transcribe_reel(url)` for the transcript (cached = free; new = 1 quota). `get_reel_details(url)` for views, likes, comments, duration. If the account has a report, `get_competitor_report(handle)` gives `stats.medianViews` for the multiple. |
 | User pasted a transcript | use it; ask for views and the account's typical views if they want the "why". |
 | Only a URL, no IShort | ask for the transcript, or point once to IShort's free transcription (`../../CONNECT-ISHORT.md`). Never guess what a video says. |
 
@@ -36,7 +36,7 @@ Text-only analysis misses half of why a Reel holds.
 Save the transcript and run the beat timer from the script generator:
 
 ```bash
-python3 ../instagram-reel-script-generator/scripts/beats.py transcript.txt
+python3 ../instagram-reel-script-generator/scripts/beats.py transcript.txt --wpm <words / duration_s * 60>
 python3 ../instagram-reel-script-generator/scripts/hookscore.py --hook "<first line>"
 ```
 
@@ -54,7 +54,12 @@ LOOP                does the last line echo the first? (rewatch fuel)
 ## Step 3. Explain why it worked (with numbers, not vibes)
 
 - **Multiple**: views / account median. Under 1.5x it did not "go viral",
-  it had a normal day; say so and stop pretending to explain a hit.
+  it had a normal day; say so and stop pretending to explain a hit. If the
+  median is unknown, say "multiple unknown", explain only the mechanics (not
+  "why it won"), and name the data that would settle it.
+- Set `--wpm` from the real duration (words / seconds x 60); creators often
+  talk at 200+ wpm and the default 165 overestimates length. beats.py labels
+  beats by position, so check its CTA label against the transcript.
 - **Hook**: formula, words, seconds to say, where the payload sits.
 - **Retention mechanics**: open loop, list count ("3 mistakes"), pattern
   interrupt, payoff placement, length vs the niche norm.
@@ -72,7 +77,8 @@ TEMPLATE  (blanks in {curly})
   CTA     ...
 
 YOUR VERSION  (from brand-voice.md + the user's topic)
-  full script, same beat count, same length +-10%
+  full script, same beat structure, length within ~10%. If keeping every
+  beat under 4s means splitting lines, split them; timing wins over beat count.
 ```
 
 Read `~/.instagram-claude-skills/brand-voice.md` for voice. If missing, ask

@@ -42,6 +42,15 @@ check "outliers: hook formula named from hooks.json" \
   "$PY $OUT $F/ishort_export_sample.csv --json" \
   "d=json.loads(o); assert d['reels'][0]['formula']!='unclassified'"
 
+printf '{"rows":[{"account":"a","views":5000,"transcript":"Five UI mistakes that are killing your designs."},{"account":"b","views":0,"transcript":"x"},{"account":"c","views":90000,"transcript":"Three Reels numbers that matter more than views."}]}' > /tmp/ics_rows.json
+printf 'c\t20000\n' > /tmp/ics_medians.tsv
+check "outliers: mixed library says NO BASELINE and counts 0-view rows" \
+  "$PY $OUT /tmp/ics_rows.json" \
+  "assert 'NO BASELINE' in o and '1 reel(s) had 0 views' in o"
+check "outliers: --medians gives per-account multiples; formulas #7/#11 match" \
+  "$PY $OUT /tmp/ics_rows.json --medians /tmp/ics_medians.tsv --json" \
+  "d=json.loads(o); r=[x for x in d['reels'] if x['account']=='c'][0]; assert r['multiple']==4.5; assert all(x['formula']!='unclassified' for x in d['reels'])"
+
 HS=skills/instagram-reel-script-generator/scripts/hookscore.py
 check "hookscore: dealbreaker hook never ranks first" \
   "$PY $HS $F/hooks_mixed.txt --json" \
