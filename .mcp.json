@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ishort": {
+      "type": "http",
+      "url": "https://ishort.pro/mcp"
+    }
+  }
+}

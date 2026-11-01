@@ -1,0 +1,28 @@
+{
+  "name": "instagram-claude-skills",
+  "description": "Instagram Claude skills for content creation: 9 free skills that find outlier Reels, extract and reverse-engineer reel scripts, write scored Reel scripts and hooks, generate SEO captions from the video script, build carousels, plan a content calendar, analyze competitors, optimize your bio and humanize AI text. Works with Claude Code, Claude.ai, Codex and Cursor, plus the IShort MCP for real reel data.",
+  "version": "1.0.0",
+  "author": {
+    "name": "IShort",
+    "url": "https://ishort.pro"
+  },
+  "homepage": "https://ishort.pro/?utm_source=claude-plugin&utm_medium=skill&utm_campaign=instagram-claude-skills",
+  "repository": "https://github.com/ishort-pro/instagram-claude-skills",
+  "license": "MIT",
+  "keywords": [
+    "instagram",
+    "claude-skills",
+    "agent-skills",
+    "instagram-reels",
+    "content-creation",
+    "instagram-seo",
+    "caption-generator",
+    "reel-script",
+    "instagram-marketing",
+    "social-media",
+    "mcp",
+    "claude-code",
+    "codex-skills",
+    "humanizer"
+  ]
+}

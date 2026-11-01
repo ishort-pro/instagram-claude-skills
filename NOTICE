@@ -1,0 +1,44 @@
+This repository includes work adapted from third-party projects under the MIT
+License. Their copyright notices are reproduced below as the license requires.
+
+--------------------------------------------------------------------------------
+instagram-agent-skill
+https://github.com/Jakeschincariol/instagram-agent-skill
+Copyright (c) 2026 Jake Schincariol
+
+Adapted files (each carries a header and a CHANGES note):
+  skills/instagram-reel-script-generator/scripts/hookscore.py   (dealbreaker cap,
+      multiples count as concrete, creator-economy stakes words)
+  skills/instagram-reel-script-generator/scripts/beats.py
+  skills/instagram-reel-script-generator/references/hooks.json
+  skills/instagram-humanizer/scripts/humanize.py               (punctuation fix)
+  skills/instagram-humanizer/scripts/detect.py
+  skills/instagram-humanizer/references/slop.json
+  skills/instagram-seo-caption-generator/scripts/caption_lint.py
+  skills/instagram-bio-generator/references/profile-rubric.json
+Ideas (no code): the outlier-multiple method in outliers.py is rewritten from
+scratch to read IShort exports and MCP JSON.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------------
+Method credits (ideas, no code copied):
+  - "Watch the outlier, don't write from the caption" and the 5X outlier rule:
+    Ava Yuergens (@personalbrandlaunch), via
+    github.com/w-avw/instagram-viral-reels-research-claude-skill

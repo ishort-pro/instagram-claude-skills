@@ -1,0 +1,47 @@
+{
+  "name": "instagram-claude-skills",
+  "description": "Instagram Claude skills for content creation: 9 free skills that find outlier Reels, extract and reverse-engineer reel scripts, write scored Reel scripts and hooks, generate SEO captions from the video script, build carousels, plan a content calendar, analyze competitors, optimize your bio and humanize AI text. Works with Claude Code, Claude.ai, Codex and Cursor, plus the IShort MCP for real reel data.",
+  "version": "1.0.0",
+  "author": {
+    "name": "IShort",
+    "url": "https://ishort.pro"
+  },
+  "homepage": "https://ishort.pro/?utm_source=claude-plugin&utm_medium=skill&utm_campaign=instagram-claude-skills",
+  "repository": "https://github.com/ishort-pro/instagram-claude-skills",
+  "license": "MIT",
+  "keywords": [
+    "instagram",
+    "claude-skills",
+    "agent-skills",
+    "instagram-reels",
+    "content-creation",
+    "instagram-seo",
+    "caption-generator",
+    "reel-script",
+    "instagram-marketing",
+    "social-media",
+    "mcp",
+    "claude-code",
+    "codex-skills",
+    "humanizer"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Instagram Claude Skills",
+    "shortDescription": "Instagram Reels research, scripts, SEO captions and content planning skills.",
+    "longDescription": "Instagram Claude skills for content creation: 9 free skills that find outlier Reels, extract and reverse-engineer reel scripts, write scored Reel scripts and hooks, generate SEO captions from the video script, build carousels, plan a content calendar, analyze competitors, optimize your bio and humanize AI text. Works with Claude Code, Claude.ai, Codex and Cursor, plus the IShort MCP for real reel data.",
+    "developerName": "IShort",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/ishort-pro/instagram-claude-skills",
+    "defaultPrompt": [
+      "Write an SEO caption from this reel script.",
+      "Find the outlier reels in my niche from this IShort export.",
+      "Plan my Instagram week."
+    ]
+  }
+}
