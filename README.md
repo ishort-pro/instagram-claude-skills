@@ -26,7 +26,7 @@ the [IShort MCP](https://ishort.pro/mcp?utm_source=github&utm_medium=readme&utm_
 | [**instagram-humanizer**](skills/instagram-humanizer/SKILL.md) | **Humanizer**: strips em dashes, AI slop words and invisible characters, scores the text on a 5-check AI-detection panel. | — |
 
 They chain: **research → extract → script → SEO caption → humanize → plan**.
-A router (`SKILL.md` at the root) sends each request to the right one.
+A router skill ([`instagram-claude-skills`](skills/instagram-claude-skills/SKILL.md)) sends each request to the right one.
 
 ## Install
 
@@ -40,7 +40,7 @@ A router (`SKILL.md` at the root) sends each request to the right one.
 **Any agent (skills CLI):**
 
 ```bash
-npx skills add ishort-pro/instagram-claude-skills
+npx skills add ishort-pro/instagram-claude-skills --skill '*'   # or one: --skill instagram-seo-caption-generator
 ```
 
 **Manual (Claude Code, Codex, Cursor, Hermes):**

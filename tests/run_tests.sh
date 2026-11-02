@@ -71,7 +71,7 @@ check "detect: AI draft is FLAGGED" \
   "assert 'FLAGGED' in o"
 
 check "every SKILL.md has name + description frontmatter, name matches folder" \
-  "for f in SKILL.md skills/*/SKILL.md; do echo \"FILE \$f\"; head -3 \$f; done" \
+  "for f in skills/*/SKILL.md; do echo \"FILE \$f\"; head -3 \$f; done" \
   "
 import re
 blocks=o.split('FILE ')[1:]
@@ -79,7 +79,7 @@ assert len(blocks)==10, len(blocks)
 for b in blocks:
     path=b.split()[0]; assert '---' in b and 'name:' in b, path
     name=re.search(r'name:\s*(\S+)', b).group(1)
-    folder=path.split('/')[-2] if '/' in path else 'instagram-claude-skills'
+    folder=path.split('/')[-2]
     assert name==folder, (name, folder)
 "
 check "plugin manifests are valid JSON" \
